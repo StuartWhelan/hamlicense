@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import type { Topic } from '../types'
 import { toItems } from '../data'
 import { LearnSession } from './LearnSession'
@@ -18,22 +18,20 @@ export function TopicDetail({ topic, onExit }: Props) {
   const [mode, setMode] = useState<Mode>('menu')
   const [showNotes, setShowNotes] = useState(false)
 
+  // Build the session's items ONCE per mode entry. Recomputing on every render
+  // (e.g. when the store updates after answering) would re-shuffle the choices
+  // mid-question and mislabel a correct answer.
+  const sessionItems = useMemo(
+    () => (mode === 'menu' ? [] : toItems(topic.questions, mode === 'test')),
+    [topic, mode],
+  )
+
   if (mode === 'learn') {
-    return (
-      <LearnSession
-        items={toItems(topic.questions, false)}
-        title={topic.title}
-        onExit={() => setMode('menu')}
-      />
-    )
+    return <LearnSession items={sessionItems} title={topic.title} onExit={() => setMode('menu')} />
   }
   if (mode === 'test') {
     return (
-      <PracticeRunner
-        items={toItems(topic.questions, true)}
-        title={topic.title}
-        onExit={() => setMode('menu')}
-      />
+      <PracticeRunner items={sessionItems} title={topic.title} onExit={() => setMode('menu')} />
     )
   }
 

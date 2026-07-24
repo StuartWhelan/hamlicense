@@ -39,14 +39,13 @@ export function ReviewSession({ topics, onExit }: Props) {
     [byId, state.starred],
   )
 
-  if (started) {
+  // Stable shuffle for the session — recomputing on each store update (grading a
+  // card) would re-shuffle the current question's choices mid-answer.
+  const startedItems = useMemo(() => (started ? toItems(started, true) : null), [started])
+
+  if (started && startedItems) {
     return (
-      <PracticeRunner
-        items={toItems(started, true)}
-        title="Review"
-        grading
-        onExit={() => setStarted(null)}
-      />
+      <PracticeRunner items={startedItems} title="Review" grading onExit={() => setStarted(null)} />
     )
   }
 
