@@ -1,9 +1,8 @@
 name: Deploy to GitHub Pages
 
-# NOTE: GitHub Pages requires a paid plan for PRIVATE repos. While this repo is
-# private on a free plan, this workflow is manual-only (won't auto-run/fail).
-# If you upgrade to GitHub Pro, re-add the `push` trigger to auto-deploy.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
