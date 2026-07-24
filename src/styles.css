@@ -681,6 +681,153 @@ body {
   color: var(--good);
 }
 
+/* ---------- question card head / star / explanation ---------- */
+.qhead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.star {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: transform 0.1s ease;
+}
+.star:active {
+  transform: scale(1.25);
+}
+.star.on {
+  color: #fbbf24;
+}
+.explbox {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+.explbox .expllabel {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.explbox p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+/* ---------- topic detail ---------- */
+.topichero {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.thstat {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 8px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.thstat strong {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--text);
+}
+.notes {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--card);
+}
+.notestoggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.notestoggle .chev {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.notesbody {
+  padding: 0 16px 16px;
+  max-height: 45vh;
+  overflow-y: auto;
+}
+.notesbody p {
+  margin: 0 0 12px;
+  line-height: 1.6;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.notesbody .notesrc {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+.modechoice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.modecard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  text-align: left;
+  padding: 20px 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.08s ease, border-color 0.15s ease;
+}
+.modecard:active {
+  transform: scale(0.98);
+}
+.modecard.learn {
+  background: linear-gradient(150deg, rgba(56, 189, 248, 0.18), var(--card));
+  border-color: var(--accent);
+}
+.modecard.test {
+  background: linear-gradient(150deg, var(--teal-d), var(--card));
+  border-color: var(--teal);
+}
+.micon {
+  font-size: 1.8rem;
+}
+.mlabel {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.mdesc {
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
 /* ---------- spinner ---------- */
 .spinner {
   width: 36px;

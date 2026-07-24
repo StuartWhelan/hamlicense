@@ -9,8 +9,11 @@ An installable **Progressive Web App** for studying the New Zealand amateur radi
   drawn from each block of ten within every topic, so topics appear in true proportion.
   2-hour timer, scored against the official **40/60 pass mark**, with a per-topic
   breakdown and review of every missed question.
-- **Study by Topic** — drill any of the 30 topics with immediate feedback, correct-answer
-  highlighting, and circuit/device diagrams.
+- **Study by Topic** — each topic opens to a hub with **"Read first" study notes** (from the
+  NZART study book) and a choice of two modes:
+  - **Learn** — self-paced flashcards: read the question, reveal the answer + a plain-language
+    **"Why" explanation**, star tricky ones. No scoring.
+  - **Test** — quiz yourself with instant feedback and explanations; misses feed Review.
 - **Spaced Repetition** — an SM-2 scheduler resurfaces questions right before you'd forget
   them. Questions you miss anywhere are enrolled automatically.
 - **Progress** — per-topic mastery bars, a predicted exam score / readiness estimate, and
@@ -24,6 +27,10 @@ parsed JSON + diagram PNGs are seeded from Richard Walmsley's (ZL1RSW) public-do
 official NZART Question Bank (Jan 2026)** — 599/600 match verbatim, the remaining one is
 present with light rewording. Pass mark (40/60) and 2-hour limit are from NZART's 2025
 Examination Procedure.
+
+**Reading notes** are extracted from the NZART "Block Course Study Notes" (Exam Study Book).
+**Answer explanations** ("Why" boxes) are **AI-generated** study aids grounded in each question's
+correct answer — helpful for learning, but not official NZART content.
 
 This is an unofficial study aid. Question bank © NZART.
 

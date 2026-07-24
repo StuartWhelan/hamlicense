@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import type { Question, Topic } from '../types'
 import { toItems } from '../data'
 import { PracticeRunner } from './PracticeRunner'
-import { dueCardIds, useAppState } from '../storage'
+import { dueCardIds, starredIds, useAppState } from '../storage'
 
 interface Props {
   topics: Topic[]
@@ -32,6 +32,11 @@ export function ReviewSession({ topics, onExit }: Props) {
         .map(([id]) => byId.get(id))
         .filter((q): q is Question => !!q),
     [byId, state.stats],
+  )
+
+  const starQuestions = useMemo(
+    () => starredIds().map((id) => byId.get(id)).filter((q): q is Question => !!q),
+    [byId, state.starred],
   )
 
   if (started) {
@@ -74,8 +79,13 @@ export function ReviewSession({ topics, onExit }: Props) {
               Drill {Math.min(30, weakQuestions.length)} weak questions
             </button>
           )}
+          {starQuestions.length > 0 && (
+            <button className="btn" onClick={() => setStarted(starQuestions.slice(0, 30))}>
+              ★ Review {Math.min(30, starQuestions.length)} starred
+            </button>
+          )}
         </div>
-        {dueQuestions.length === 0 && weakQuestions.length === 0 && (
+        {dueQuestions.length === 0 && weakQuestions.length === 0 && starQuestions.length === 0 && (
           <p className="muted small">
             Nothing to review yet. Take a mock exam or study a topic — questions you miss are added
             here automatically.

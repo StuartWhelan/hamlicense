@@ -16,10 +16,11 @@ export interface AppState {
   stats: Record<string, QStat>
   cards: Record<string, Card>
   exams: ExamResult[]
+  starred: Record<string, true> // questions the user flagged to revisit
 }
 
 function empty(): AppState {
-  return { version: 1, stats: {}, cards: {}, exams: [] }
+  return { version: 1, stats: {}, cards: {}, exams: [], starred: {} }
 }
 
 function load(): AppState {
@@ -59,13 +60,16 @@ export function useAppState(): AppState {
 
 export function recordAnswer(qid: string, correct: boolean) {
   const s = state.stats[qid] ?? { seen: 0, correct: 0, wrong: 0, lastCorrect: null }
-  state.stats = {
-    ...state.stats,
-    [qid]: {
-      seen: s.seen + 1,
-      correct: s.correct + (correct ? 1 : 0),
-      wrong: s.wrong + (correct ? 0 : 1),
-      lastCorrect: correct,
+  state = {
+    ...state,
+    stats: {
+      ...state.stats,
+      [qid]: {
+        seen: s.seen + 1,
+        correct: s.correct + (correct ? 1 : 0),
+        wrong: s.wrong + (correct ? 0 : 1),
+        lastCorrect: correct,
+      },
     },
   }
   persist()
@@ -73,20 +77,36 @@ export function recordAnswer(qid: string, correct: boolean) {
 
 export function gradeCard(qid: string, grade: Grade, now: number) {
   const existing = state.cards[qid] ?? newCard(now)
-  state.cards = { ...state.cards, [qid]: schedule(existing, grade, now) }
+  state = { ...state, cards: { ...state.cards, [qid]: schedule(existing, grade, now) } }
   persist()
 }
 
 /** Ensure a card exists for a question (called when it first enters review). */
 export function ensureCard(qid: string, now: number) {
   if (!state.cards[qid]) {
-    state.cards = { ...state.cards, [qid]: newCard(now) }
+    state = { ...state, cards: { ...state.cards, [qid]: newCard(now) } }
     persist()
   }
 }
 
+export function toggleStar(qid: string) {
+  const next = { ...state.starred }
+  if (next[qid]) delete next[qid]
+  else next[qid] = true
+  state = { ...state, starred: next }
+  persist()
+}
+
+export function isStarred(qid: string): boolean {
+  return !!state.starred[qid]
+}
+
+export function starredIds(): string[] {
+  return Object.keys(state.starred)
+}
+
 export function addExam(result: ExamResult) {
-  state.exams = [result, ...state.exams].slice(0, 50)
+  state = { ...state, exams: [result, ...state.exams].slice(0, 50) }
   persist()
 }
 

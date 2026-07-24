@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { Topic } from '../types'
-import { toItems } from '../data'
-import { PracticeRunner } from './PracticeRunner'
+import { TopicDetail } from './TopicDetail'
 import { useAppState } from '../storage'
 import { topicMastery } from '../selectors'
 
@@ -16,10 +15,7 @@ export function StudyTopics({ topics, onExit }: Props) {
   const mastery = topicMastery(topics, state)
 
   if (active) {
-    const items = toItems(active.questions, true)
-    return (
-      <PracticeRunner items={items} title={active.title} onExit={() => setActive(null)} />
-    )
+    return <TopicDetail topic={active} onExit={() => setActive(null)} />
   }
 
   return (

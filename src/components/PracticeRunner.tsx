@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import type { QuizItem } from '../data'
 import { correctDisplayIndex } from '../data'
 import { QuestionCard } from './QuestionCard'
-import { ensureCard, gradeCard, recordAnswer } from '../storage'
+import { ensureCard, gradeCard, isStarred, recordAnswer, toggleStar, useAppState } from '../storage'
 import type { Grade } from '../srs'
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
 
 /** Immediate-feedback runner used for topic drills and spaced-repetition review. */
 export function PracticeRunner({ items, title, grading = false, onExit }: Props) {
+  useAppState() // re-render on star changes
   const [i, setI] = useState(0)
   const [selected, setSelected] = useState<number | null>(null)
   const [correctCount, setCorrectCount] = useState(0)
@@ -78,7 +79,14 @@ export function PracticeRunner({ items, title, grading = false, onExit }: Props)
         <span style={{ width: `${(i / items.length) * 100}%` }} />
       </div>
 
-      <QuestionCard item={item} selected={selected} reveal={reveal} onSelect={answer} />
+      <QuestionCard
+        item={item}
+        selected={selected}
+        reveal={reveal}
+        onSelect={answer}
+        starred={isStarred(item.q.id)}
+        onToggleStar={() => toggleStar(item.q.id)}
+      />
 
       {reveal && (
         <div className="feedback">

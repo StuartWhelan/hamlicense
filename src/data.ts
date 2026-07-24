@@ -9,12 +9,22 @@ let cache: { topics: Topic[]; questions: Question[] } | null = null
 /** Load and normalise the question bank once. */
 export async function loadBank(): Promise<{ topics: Topic[]; questions: Question[] }> {
   if (cache) return cache
-  const res = await fetch(`${import.meta.env.BASE_URL}questions.json`)
-  const raw: RawTopic[] = await res.json()
+  const base = import.meta.env.BASE_URL
+  const [raw, notes, explanations] = await Promise.all([
+    fetch(`${base}questions.json`).then((r) => r.json() as Promise<RawTopic[]>),
+    fetch(`${base}topic-notes.json`)
+      .then((r) => r.json() as Promise<{ index: number; notes: string }[]>)
+      .catch(() => [] as { index: number; notes: string }[]),
+    fetch(`${base}explanations.json`)
+      .then((r) => r.json() as Promise<Record<string, string>>)
+      .catch(() => ({}) as Record<string, string>),
+  ])
+  const notesByIndex = new Map(notes.map((n) => [n.index, n.notes]))
   const topics: Topic[] = raw.map((t, ti) => ({
     index: ti,
     title: t.Title,
     required: t.RequiredAnswers,
+    notes: notesByIndex.get(ti),
     questions: t.Questions.map((q, qi) => ({
       id: `${ti}-${qi}`,
       topicIndex: ti,
@@ -23,6 +33,7 @@ export async function loadBank(): Promise<{ topics: Topic[]; questions: Question
       choices: q.Choices,
       answer: q.Answer,
       image: q.Image,
+      explanation: explanations[`${ti}-${qi}`],
     })),
   }))
   const questions = topics.flatMap((t) => t.questions)

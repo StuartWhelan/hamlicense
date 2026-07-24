@@ -59,8 +59,9 @@ export function Home({ topics, go }: Props) {
       </div>
 
       <p className="disclaimer">
-        Question bank © NZART, used per the public-domain examination pool. This is an unofficial
-        study aid.
+        Question bank © NZART, used per the public-domain examination pool. Reading notes are from
+        the NZART study book; the "Why" answer explanations are AI-generated study aids, not
+        official. Unofficial app.
       </p>
     </div>
   )

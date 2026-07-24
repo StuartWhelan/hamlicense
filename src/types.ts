@@ -20,12 +20,14 @@ export interface Question {
   choices: string[]
   answer: number
   image?: string
+  explanation?: string // AI-generated study explanation of why the answer is correct
 }
 export interface Topic {
   index: number
   title: string
   required: number
   questions: Question[]
+  notes?: string // reading notes from the NZART study book
 }
 
 export type QuizMode = 'exam' | 'practice' | 'review'
